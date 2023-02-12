@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -32,6 +33,7 @@ import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class AuthorizationServerConfig {
 
   @Bean
@@ -61,7 +63,8 @@ public class AuthorizationServerConfig {
         .authorizeHttpRequests((authorize) -> authorize
             .anyRequest().authenticated()
         )
-        .formLogin(Customizer.withDefaults());
+        .formLogin(Customizer.withDefaults())
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::opaqueToken);
     // Form login handles the redirect to the login page from the
         // authorization server filter chain
 
